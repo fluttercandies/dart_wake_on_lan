@@ -1,5 +1,5 @@
 name: wol_cli
-version: 1.0.0
+version: 1.0.1
 description: A CLI application to send Wake-On-Lan packets.
 repository: https://github.com/fluttercandies/dart_wake_on_lan
 
@@ -12,7 +12,6 @@ dependencies:
 
 dev_dependencies:
   lints: '>=1.0.0 <3.0.0'
-  test: ^1.16.6
 
 executables:
   wol: wol

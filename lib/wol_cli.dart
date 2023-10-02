@@ -8,13 +8,13 @@ Future<void> wake(List<String> arguments) async {
     ..addOption('mac')
     ..addOption('repeat');
   final result = parser.parse(arguments);
-  if (result['help'] != null) {
+  if (result['help'] == true) {
     print(parser.usage);
     return;
   }
 
-  final rHost = result['host'] as String?,
-      rMac = result['mac'] as String?,
+  String? rHost = result['host'] as String?;
+  final rMac = result['mac'] as String?,
       rRepeat = result['repeat'] as int? ?? 3;
   if (rHost == null || rHost.isEmpty) {
     throw ArgumentError.notNull('host');
@@ -22,8 +22,11 @@ Future<void> wake(List<String> arguments) async {
   if (rMac == null || rMac.isEmpty) {
     throw ArgumentError.notNull('mac');
   }
-  if (MACAddress.validate(rMac)) {
+  if (!MACAddress.validate(rMac)) {
     throw ArgumentError('invalid MAC address');
+  }
+  if (!rHost.startsWith(RegExp(r'https?://'))) {
+    rHost = 'http://$rHost';
   }
   final uri = Uri.parse(rHost);
   if (uri.host.isEmpty) {
