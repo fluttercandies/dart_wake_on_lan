@@ -5,8 +5,9 @@ Future<void> wake(List<String> arguments) async {
   final parser = ArgParser()
     ..addFlag('help', abbr: 'h', negatable: false)
     ..addOption('host')
+    ..addOption('port', defaultsTo: '9')
     ..addOption('mac')
-    ..addOption('repeat');
+    ..addOption('repeat', defaultsTo: '3');
   final result = parser.parse(arguments);
   if (result['help'] == true) {
     print(parser.usage);
@@ -15,14 +16,16 @@ Future<void> wake(List<String> arguments) async {
 
   String? rHost = result['host'] as String?;
   final rMac = result['mac'] as String?,
-      rRepeat = result['repeat'] as int? ?? 3;
+      rPort = int.parse(result['port']),
+      rRepeat = int.parse(result['repeat']);
   if (rHost == null || rHost.isEmpty) {
     throw ArgumentError.notNull('host');
   }
   if (rMac == null || rMac.isEmpty) {
     throw ArgumentError.notNull('mac');
   }
-  if (!MACAddress.validate(rMac)) {
+  if (!MACAddress.validate(rMac, delimiter: ':') &&
+      !MACAddress.validate(rMac, delimiter: '-')) {
     throw ArgumentError('invalid MAC address');
   }
   if (!rHost.startsWith(RegExp(r'https?://'))) {
@@ -39,14 +42,13 @@ Future<void> wake(List<String> arguments) async {
   } else {
     ipv4 = await IPv4Address.fromHost(host);
   }
-  final mac = MACAddress(rMac);
-  final int port;
-  if (uri.port == 0) {
-    port = 9;
-  } else {
-    port = uri.port;
+  MACAddress mac;
+  try {
+    mac = MACAddress(rMac, delimiter: ':');
+  } catch (_) {
+    mac = MACAddress(rMac, delimiter: '-');
   }
 
-  final wol = WakeOnLAN(ipv4, mac, port: port);
+  final wol = WakeOnLAN(ipv4, mac, port: rPort);
   await wol.wake(repeat: rRepeat);
 }
