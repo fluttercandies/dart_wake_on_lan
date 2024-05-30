@@ -24,8 +24,8 @@ Future<void> wake(List<String> arguments) async {
   if (rMac == null || rMac.isEmpty) {
     throw ArgumentError.notNull('mac');
   }
-  if (!MACAddress.validate(rMac, delimiter: ':') &&
-      !MACAddress.validate(rMac, delimiter: '-')) {
+  if (!MACAddress.validate(rMac, delimiter: ':').state &&
+      !MACAddress.validate(rMac, delimiter: '-').state) {
     throw ArgumentError('invalid MAC address');
   }
   if (!rHost.startsWith(RegExp(r'https?://'))) {
@@ -36,11 +36,11 @@ Future<void> wake(List<String> arguments) async {
     throw ArgumentError('invalid host');
   }
   final host = uri.host;
-  final IPv4Address ipv4;
-  if (IPv4Address.validate(host)) {
-    ipv4 = IPv4Address(host);
+  final IPAddress ipv4;
+  if (IPAddress.validate(host).state) {
+    ipv4 = IPAddress(host);
   } else {
-    ipv4 = await IPv4Address.fromHost(host);
+    ipv4 = await IPAddress.fromHost(host);
   }
   MACAddress mac;
   try {
