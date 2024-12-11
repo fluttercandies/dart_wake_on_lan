@@ -1,6 +1,6 @@
 name: wol_cli
-version: 2.0.0
-description: A CLI application to send Wake-On-Lan packets.
+version: 2.0.0+1
+description: A CLI application to send Wake-On-Lan packets to specified destination including IP / Domain Host + port.
 repository: https://github.com/fluttercandies/dart_wake_on_lan
 
 environment:

@@ -1,3 +1,7 @@
+## 2.0.0+1
+
+- Print help if no arguments.
+
 ## 2.0.0
 
 - Support `package:wake_on_lan` v4.

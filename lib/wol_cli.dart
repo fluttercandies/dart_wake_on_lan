@@ -9,7 +9,7 @@ Future<void> wake(List<String> arguments) async {
     ..addOption('port', defaultsTo: '9')
     ..addOption('mac')
     ..addOption('repeat', defaultsTo: '3');
-  final result = parser.parse(arguments);
+  final result = parser.parse({...arguments, if (arguments.isEmpty) '-h'});
   if (result['help'] == true) {
     print(parser.usage);
     return;
