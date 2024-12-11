@@ -8,7 +8,8 @@ Future<void> wake(List<String> arguments) async {
     ..addOption('host')
     ..addOption('port', defaultsTo: '9')
     ..addOption('mac')
-    ..addOption('repeat', defaultsTo: '3');
+    ..addOption('repeat', defaultsTo: '3')
+    ..addOption('delay', defaultsTo: '100');
   final result = parser.parse({...arguments, if (arguments.isEmpty) '-h'});
   if (result['help'] == true) {
     print(parser.usage);
@@ -18,7 +19,8 @@ Future<void> wake(List<String> arguments) async {
   String? rHost = result['host'] as String?;
   final rMac = result['mac'] as String?,
       rPort = int.parse(result['port']),
-      rRepeat = int.parse(result['repeat']);
+      rRepeat = int.parse(result['repeat']),
+      rDelay = int.parse(result['delay']);
   if (rHost == null || rHost.isEmpty) {
     throw ArgumentError.notNull('host');
   }
@@ -51,5 +53,5 @@ Future<void> wake(List<String> arguments) async {
   }
 
   final wol = WakeOnLAN(ipv4, mac, port: rPort);
-  await wol.wake(repeat: rRepeat);
+  await wol.wake(repeat: rRepeat, repeatDelay: Duration(milliseconds: rDelay));
 }

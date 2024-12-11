@@ -1,3 +1,7 @@
+## 2.1.0
+
+- Support specifying delay in each packet.
+
 ## 2.0.0+1
 
 - Print help if no arguments.
