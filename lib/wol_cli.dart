@@ -1,6 +1,7 @@
 import 'package:args/args.dart';
 import 'package:wake_on_lan/wake_on_lan.dart';
 
+/// Wake the specified destination with the given arguments.
 Future<void> wake(List<String> arguments) async {
   final parser = ArgParser()
     ..addFlag('help', abbr: 'h', negatable: false)
